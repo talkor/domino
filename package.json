@@ -1,14 +1,14 @@
 {
-  "name": "react16-template",
+  "name": "domino",
   "version": "1.0.0",
-  "description": "React 16 deployed using webpack",
+  "description": "Domino Game, Part 1",
   "main": "index.js",
   "scripts": {
     "build": "webpack --mode development",
     "build-watch": "webpack --watch --mode development"
   },
-  "author": "Spivak Ofer",
-  "license": "ISC",
+  "author": "Tal Koren, Daniel Cohen",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.3.3",
     "@babel/plugin-transform-async-to-generator": "^7.2.0",

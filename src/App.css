@@ -1,0 +1,16 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: #1fa2ff;
+  background: -webkit-linear-gradient(to right, #a6ffcb, #12d8fa, #1fa2ff);
+  background: linear-gradient(to right, #a6ffcb, #12d8fa, #1fa2ff);
+}
+
+.container {
+  width: 800px;
+  margin: 0 auto;
+  min-height: 100%;
+}

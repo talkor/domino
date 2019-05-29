@@ -1,7 +1,8 @@
 import React from 'react';
 import PlayerStack from './PlayerStack.jsx';
 import Board from './Board.jsx';
-import './PlayerStack.css';
+import Stock from './Stock.jsx';
+import './Game.css';
 
 const NUM_STACK = 6;
 const NUM_TILES = 28;
@@ -10,7 +11,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameTiles: '',
+      gameTiles: [],
       playerTiles: []
     };
   }
@@ -24,15 +25,19 @@ class Game extends React.Component {
       tiles.splice(number, 1);
     }
 
-    this.setState({ playerTiles: chosenTiles });
+    this.setState({ playerTiles: chosenTiles, gameTiles: tiles });
   }
 
   render() {
     return (
       <div>
         <p>Hello Domino App Nihao</p>
+        <span>{this.state.gameTiles.length}</span>
         <Board />
-        <PlayerStack playerTiles={this.state.playerTiles} />
+        <div className="player-section">
+          <Stock />
+          <PlayerStack playerTiles={this.state.playerTiles} />
+        </div>
       </div>
     );
   }

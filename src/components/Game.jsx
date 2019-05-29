@@ -2,6 +2,7 @@ import React from 'react';
 import PlayerStack from './PlayerStack.jsx';
 import Board from './Board.jsx';
 import Stock from './Stock.jsx';
+import Toolbar from './Toolbar.jsx';
 import './Game.css';
 
 const NUM_STACK = 6;
@@ -12,7 +13,16 @@ class Game extends React.Component {
     super(props);
     this.state = {
       gameTiles: [],
-      playerTiles: []
+      playerTiles: [],
+      moves: [],
+      stats: {
+        numTurn: 0,
+        stockWithdrawals: 0,
+        turnTime: [],
+        avgTurnTime: 0,
+        score: 0
+      },
+      gameTime: 0
     };
   }
 
@@ -33,6 +43,7 @@ class Game extends React.Component {
       <div>
         <p>Hello Domino App Nihao</p>
         <span>{this.state.gameTiles.length}</span>
+        <Toolbar numTurns={this.state.numTurns} />
         <Board />
         <div className="player-section">
           <Stock />

@@ -123,3 +123,9 @@
 .tile-6 .dot-6 {
   right: 10%;
 }
+
+.stock:hover {
+  transform: rotate3d(1, 1, 1, 15deg);
+  transform-style: preserve-3d;
+  background-image: linear-gradient(to bottom right, #000, #100);
+}

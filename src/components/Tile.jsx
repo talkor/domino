@@ -5,9 +5,10 @@ import { tiles } from '../Tiles.jsx';
 const Tile = props => {
   return (
     <div
-      className={`tile ${props.rotated ? 'rotated' : ''} ${
-        props.placed ? 'placed' : ''
-      } ${props.selected ? 'selected' : ''}`}
+      className={`tile ${props.rotated ? 'rotated' : ''} 
+        ${props.placed ? 'placed' : ''} 
+        ${props.selected ? 'selected' : ''}
+        ${props.isStock ? 'stock' : ''}`}
       onClick={props.onTileClick}
       data-tile={props.tile}
     >
@@ -34,7 +35,8 @@ const Tile = props => {
 
 Tile.defaultProps = {
   rotated: false,
-  placed: false
+  placed: false,
+  isStock: false
 };
 
 export default Tile;

@@ -41,8 +41,6 @@ class Game extends React.Component {
   render() {
     return (
       <div>
-        <p>Hello Domino App Nihao</p>
-        <span>{this.state.gameTiles.length}</span>
         <Toolbar numTurns={this.state.numTurns} />
         <Board />
         <div className="player-section">

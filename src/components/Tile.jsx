@@ -3,13 +3,16 @@ import './Tile.css';
 import { tiles } from '../Tiles.jsx';
 
 const Tile = props => {
+  const renderedClasses = `tile ${props.rotated ? 'rotated' : ''} ${
+    props.placed ? 'placed' : ''
+  } ${props.selected ? 'selected' : ''} ${props.isStock ? 'stock' : ''} ${
+    props.placeholder ? 'placeholder' : ''
+  }`;
+
   return (
     <div
-      className={`tile ${props.rotated ? 'rotated' : ''} 
-        ${props.placed ? 'placed' : ''} 
-        ${props.selected ? 'selected' : ''}
-        ${props.isStock ? 'stock' : ''}`}
-      onClick={props.onTileClick}
+      className={`tile ${renderedClasses}`}
+      onClick={e => props.onTileClick(e, props.placed)}
       data-tile={props.tile}
     >
       <div className={`side-a tile-${tiles[props.tile].a}`}>
@@ -36,7 +39,8 @@ const Tile = props => {
 Tile.defaultProps = {
   rotated: false,
   placed: false,
-  isStock: false
+  isStock: false,
+  tile: 0
 };
 
 export default Tile;

@@ -5,14 +5,34 @@ import './Board.css';
 class Board extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isPlaceholder: true,
+      isPlaced: false
+    };
+  }
+
+  onTileClick(event, placed) {
+    if (!placed) {
+      this.setState({
+        selectedTile: this.props.selectedTile,
+        isPlaceholder: false,
+        isPlaced: true
+      });
+
+      this.props.onTilePlaced();
+    }
   }
 
   render() {
     return (
       <div className="board">
-        <Tile tile="12" rotated="true" placed="true" />
-        <Tile tile="3" placed="true" />
+        <Tile
+          tile={this.state.selectedTile}
+          placeholder={this.state.isPlaceholder}
+          placed={this.state.isPlaced}
+          onTileClick={this.onTileClick.bind(this)}
+          rotated={false}
+        />
       </div>
     );
   }

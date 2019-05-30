@@ -129,3 +129,27 @@
   transform-style: preserve-3d;
   background-image: linear-gradient(to bottom right, #000, #100);
 }
+
+.placeholder {
+  background-color: transparent;
+  border: 1px solid rgb(255, 0, 0);
+  box-shadow: none;
+}
+
+.placeholder:hover,
+.placeholder.rotated:hover {
+  cursor: pointer;
+  transition: ease 0.5s;
+}
+
+.placeholder:hover {
+  transform: scale(1.05) !important;
+}
+
+.placeholder.rotated:hover {
+  transform: scale(1.05) rotate(-90deg) !important;
+}
+
+.placeholder .divider {
+  display: none;
+}

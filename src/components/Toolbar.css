@@ -1,0 +1,17 @@
+.game-button {
+  margin: 5px;
+  border: 1px solid rgb(255, 255, 255, 0.5);
+  border-radius: 20px;
+  background-color: rgb(5, 117, 230, 0);
+  color: #fff;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.game-button:focus {
+  outline: 0;
+}
+
+.game-button:hover {
+  background-color: rgb(5, 117, 230, 0.3);
+}

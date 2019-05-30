@@ -14,6 +14,8 @@ class Game extends React.Component {
     this.state = {
       gameTiles: [],
       playerTiles: [],
+      selectedTile: -1,
+      boardTiles: [],
       moves: [],
       stats: {
         numTurn: 0,
@@ -38,14 +40,27 @@ class Game extends React.Component {
     this.setState({ playerTiles: chosenTiles, gameTiles: tiles });
   }
 
+  setSelectedTile(selectedTile) {
+    this.setState({ selectedTile });
+  }
+
+  onTilePlaced() {}
+
   render() {
     return (
       <div>
         <Toolbar numTurns={this.state.numTurns} />
-        <Board />
+        <Board
+          placedTiles={this.state.placedTiles}
+          selectedTile={this.state.selectedTile}
+          onTilePlaced={this.onTilePlaced.bind(this)}
+        />
         <div className="player-section">
           <Stock />
-          <PlayerStack playerTiles={this.state.playerTiles} />
+          <PlayerStack
+            playerTiles={this.state.playerTiles}
+            setSelectedTile={this.setSelectedTile.bind(this)}
+          />
         </div>
       </div>
     );

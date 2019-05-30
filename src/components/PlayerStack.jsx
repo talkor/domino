@@ -12,9 +12,12 @@ class PlayerStack extends React.Component {
 
   onTileClick(event) {
     event.preventDefault();
+    const selectedTile = event.currentTarget.dataset.tile;
     this.setState({
-      selectedTile: event.currentTarget.dataset.tile
+      selectedTile
     });
+
+    this.props.setSelectedTile(selectedTile);
   }
 
   render() {

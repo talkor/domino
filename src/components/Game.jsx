@@ -70,18 +70,23 @@ class Game extends React.Component {
     const boardTiles = this.state.boardTiles;
     const selectedTile = this.state.selectedTile;
 
-    boardTiles[tileId] = {
-      ...boardTiles[tileId],
-      tile: selectedTile,
-      placed: true,
-      placeholder: false
-    };
+    if (selectedTile != -1) {
+      boardTiles[tileId] = {
+        ...boardTiles[tileId],
+        tile: selectedTile,
+        placed: true,
+        placeholder: false,
+        rotated: true
+      };
 
-    // Remove from playerTiles
-    const playerTiles = this.state.playerTiles;
-    playerTiles.splice(playerTiles.indexOf(parseInt(selectedTile, 10)), 1);
+      // Remove from playerTiles
+      const playerTiles = this.state.playerTiles;
+      playerTiles.splice(playerTiles.indexOf(parseInt(selectedTile, 10)), 1);
 
-    this.setState({ boardTiles, playerTiles, selectedTile: -1 });
+      this.setState({ boardTiles, playerTiles, selectedTile: -1 });
+    } else {
+      console.log('You must select a tile first');
+    }
   }
 
   onStockWithdrawal() {
@@ -90,7 +95,7 @@ class Game extends React.Component {
     const randomIndex = Math.floor(
       Math.random() * Math.floor(this.state.gameTiles.length)
     );
-    console.log(randomIndex);
+
     if (randomIndex === -1) {
       console.log('Stock is empty');
     } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
@@ -106,7 +111,7 @@ class Game extends React.Component {
   render() {
     return (
       <div>
-        <Toolbar numTurns={this.state.numTurns} />
+        <Toolbar stats={this.state.stats} />
         <Board
           boardTiles={this.state.boardTiles}
           selectedTile={this.state.selectedTile}

@@ -1,10 +1,8 @@
 export const tilesMap = {
-  0: [
-    {
-      a: 0,
-      b: 0
-    }
-  ],
+  0: {
+    a: 0,
+    b: 0
+  },
   1: {
     a: 0,
     b: 1

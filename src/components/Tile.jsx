@@ -1,6 +1,6 @@
 import React from 'react';
 import './Tile.css';
-import { tiles } from '../Tiles.js';
+import { tilesMap } from '../TilesMap.js';
 
 const Tile = props => {
   const renderedClasses = `tile ${props.rotated ? 'rotated' : ''} ${
@@ -17,7 +17,7 @@ const Tile = props => {
         data-tile={props.tile}
         id={props.id}
       >
-        <div className={`side-a tile-${tiles[props.tile].a}`}>
+        <div className={`side-a tile-${tilesMap[props.tile].a}`}>
           <span className="dot dot-1" />
           <span className="dot dot-2" />
           <span className="dot dot-3" />
@@ -26,7 +26,7 @@ const Tile = props => {
           <span className="dot dot-6" />
         </div>
         <div className="divider" />
-        <div className={`side-b tile-${tiles[props.tile].b}`}>
+        <div className={`side-b tile-${tilesMap[props.tile].b}`}>
           <span className="dot dot-1" />
           <span className="dot dot-2" />
           <span className="dot dot-3" />

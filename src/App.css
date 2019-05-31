@@ -4,6 +4,8 @@ body {
 }
 
 body {
+  font-family: 'Avenir';
+  font-size: 14px;
   background: #1fa2ff;
   background: -webkit-linear-gradient(to right, #a6ffcb, #12d8fa, #1fa2ff);
   background: linear-gradient(to right, #a6ffcb, #12d8fa, #1fa2ff);

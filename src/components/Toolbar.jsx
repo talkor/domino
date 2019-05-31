@@ -1,4 +1,5 @@
 import React from 'react';
+import Timer from './Timer.jsx';
 import './Toolbar.css';
 
 class Toolbar extends React.Component {
@@ -10,8 +11,8 @@ class Toolbar extends React.Component {
   render() {
     return (
       <div className="toolbar">
-        <span className="timer">00:00</span>
-        <span>{this.props.numTurns}</span>
+        <Timer />
+        <span>{this.props.stats.numTurns}</span>
         <button className="game-button new">New Game</button>
         <button className="game-button prev">Prev</button>
         <button className="game-button next">Next</button>

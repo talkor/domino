@@ -1,6 +1,6 @@
 import React from 'react';
 import './Tile.css';
-import { tiles } from '../Tiles.jsx';
+import { tiles } from '../Tiles.js';
 
 const Tile = props => {
   const renderedClasses = `tile ${props.rotated ? 'rotated' : ''} ${

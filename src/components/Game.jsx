@@ -20,8 +20,12 @@ class Game extends React.Component {
       selectedTile: -1,
       moves: [],
       gameTime: 0,
+      uiMessage: {
+        message: '',
+        show: false
+      },
       stats: {
-        numTurn: 0,
+        numTurns: 0,
         stockWithdrawals: 0,
         turnTime: [],
         avgTurnTime: 0,
@@ -85,8 +89,25 @@ class Game extends React.Component {
 
       this.setState({ boardTiles, playerTiles, selectedTile: -1 });
     } else {
-      console.log('You must select a tile first');
+      this.showUiMessage('You must select a tile first');
     }
+  }
+
+  showUiMessage(message) {
+    this.setState({
+      uiMessage: {
+        message,
+        show: true
+      }
+    });
+
+    setTimeout(
+      () =>
+        this.setState({
+          uiMessage: { ...this.state.uiMessage, show: false }
+        }),
+      2500
+    );
   }
 
   onStockWithdrawal() {
@@ -97,21 +118,21 @@ class Game extends React.Component {
     );
 
     if (randomIndex === -1) {
-      console.log('Stock is empty');
+      this.showUiMessage('Stock is empty!');
     } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
       playerTiles.push(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
 
       this.setState({ playerTiles, gameTiles });
     } else {
-      console.log('Cannot hold more than 10 tiles at a time');
+      this.showUiMessage('You cannot hold more than 10 tiles at a time');
     }
   }
 
   render() {
     return (
       <div>
-        <Toolbar stats={this.state.stats} />
+        <Toolbar stats={this.state.stats} uiMessage={this.state.uiMessage} />
         <Board
           boardTiles={this.state.boardTiles}
           selectedTile={this.state.selectedTile}

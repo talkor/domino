@@ -1,7 +1,7 @@
 .toolbar {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
 }
 
@@ -21,4 +21,22 @@
 
 .game-button:hover {
   background-color: rgb(5, 117, 230, 0.3);
+}
+
+.ui-message {
+  text-align: center;
+  height: 20px;
+  opacity: 0;
+  transition: ease 0.5s;
+}
+
+.ui-message.show {
+  transition: ease 0.5s;
+  opacity: 1;
+}
+
+.ui-message.hide {
+  transition: ease 0.5s;
+
+  opacity: 0;
 }

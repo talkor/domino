@@ -8,6 +8,7 @@ import './Game.css';
 const NUM_STACK = 6;
 const NUM_TILES = 28;
 const BOARD_SIZE = 40;
+const MAX_TILES_FOR_PLAYER = 10;
 
 class Game extends React.Component {
   constructor(props) {
@@ -15,30 +16,36 @@ class Game extends React.Component {
     this.state = {
       gameTiles: [],
       playerTiles: [],
-      selectedTile: -1,
       boardTiles: [],
+      selectedTile: -1,
       moves: [],
+      gameTime: 0,
       stats: {
         numTurn: 0,
         stockWithdrawals: 0,
         turnTime: [],
         avgTurnTime: 0,
         score: 0
-      },
-      gameTime: 0
+      }
     };
   }
 
   generatePlayerTiles() {
-    const tiles = new Array(NUM_TILES).fill(0).map((_, index) => index);
-    const chosenTiles = [];
-    for (let index = 0; index < NUM_STACK; index++) {
-      const number = Math.floor(Math.random() * Math.floor(tiles.length));
-      chosenTiles.push(tiles[number]);
-      tiles.splice(number, 1);
-    }
+    const gameTiles = new Array(NUM_TILES).fill(0).map((_, index) => index);
+    const playerTiles = [];
 
-    this.setState({ playerTiles: chosenTiles, gameTiles: tiles });
+    Array(NUM_STACK)
+      .fill('')
+      .map(() => {
+        const randomIndex = Math.floor(
+          Math.random() * Math.floor(gameTiles.length)
+        );
+
+        playerTiles.push(gameTiles[randomIndex]);
+        gameTiles.splice(randomIndex, 1);
+      });
+
+    this.setState({ playerTiles, gameTiles });
   }
 
   generateBoardTiles() {
@@ -62,6 +69,7 @@ class Game extends React.Component {
   onTilePlaced(tileId) {
     const boardTiles = this.state.boardTiles;
     const selectedTile = this.state.selectedTile;
+
     boardTiles[tileId] = {
       ...boardTiles[tileId],
       tile: selectedTile,
@@ -72,7 +80,27 @@ class Game extends React.Component {
     // Remove from playerTiles
     const playerTiles = this.state.playerTiles;
     playerTiles.splice(playerTiles.indexOf(parseInt(selectedTile, 10)), 1);
+
     this.setState({ boardTiles, playerTiles, selectedTile: -1 });
+  }
+
+  onStockWithdrawal() {
+    const gameTiles = this.state.gameTiles;
+    const playerTiles = this.state.playerTiles;
+    const randomIndex = Math.floor(
+      Math.random() * Math.floor(this.state.gameTiles.length)
+    );
+    console.log(randomIndex);
+    if (randomIndex === -1) {
+      console.log('Stock is empty');
+    } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
+      playerTiles.push(this.state.gameTiles[randomIndex]);
+      gameTiles.splice(randomIndex, 1);
+
+      this.setState({ playerTiles, gameTiles });
+    } else {
+      console.log('Cannot hold more than 10 tiles at a time');
+    }
   }
 
   render() {
@@ -85,7 +113,11 @@ class Game extends React.Component {
           onTilePlaced={this.onTilePlaced.bind(this)}
         />
         <div className="player-section">
-          <Stock />
+          <Stock
+            gameTiles={this.state.gameTiles}
+            empty={this.state.gameTiles.length === 0}
+            onStockWithdrawal={this.onStockWithdrawal.bind(this)}
+          />
           <PlayerStack
             playerTiles={this.state.playerTiles}
             selectedTile={this.state.selectedTile}

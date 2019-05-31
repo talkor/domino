@@ -130,6 +130,14 @@
   background-image: linear-gradient(to bottom right, #000, #100);
 }
 
+.stock .divider {
+  display: none;
+}
+
+.stock.empty {
+  display: none;
+}
+
 .placeholder {
   background-color: transparent;
   border: 1px solid rgb(255, 0, 0);

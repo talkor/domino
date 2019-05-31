@@ -10,13 +10,25 @@ class Toolbar extends React.Component {
 
   render() {
     return (
-      <div className="toolbar">
-        <Timer />
-        <span>{this.props.stats.numTurns}</span>
-        <button className="game-button new">New Game</button>
-        <button className="game-button prev">Prev</button>
-        <button className="game-button next">Next</button>
-      </div>
+      <React.Fragment>
+        <div className="toolbar">
+          <Timer />
+          <span>Turns: {this.props.stats.numTurns}</span>
+          <span>Stock Withdrawals: {this.props.stats.stockWithdrawals}</span>
+          <span>Avg. Turn Time: {this.props.stats.avgTurnTime}</span>
+          <span>Score: {this.props.stats.score}</span>
+          <button className="game-button new">New Game</button>
+          <button className="game-button prev">Prev</button>
+          <button className="game-button next">Next</button>
+        </div>
+        <div
+          className={`ui-message ${
+            this.props.uiMessage.show ? 'show' : 'hide'
+          }`}
+        >
+          {this.props.uiMessage.message}
+        </div>
+      </React.Fragment>
     );
   }
 }

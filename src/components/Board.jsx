@@ -2,40 +2,27 @@ import React from 'react';
 import Tile from './Tile.jsx';
 import './Board.css';
 
-class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isPlaceholder: true,
-      isPlaced: false
-    };
-  }
+const Board = props => {
+  const handleTilePlace = event => {
+    const tileId = event.currentTarget.id;
+    props.onTilePlaced(tileId);
+  };
 
-  onTileClick(event, placed) {
-    if (!placed) {
-      this.setState({
-        selectedTile: this.props.selectedTile,
-        isPlaceholder: false,
-        isPlaced: true
-      });
-
-      this.props.onTilePlaced();
-    }
-  }
-
-  render() {
-    return (
-      <div className="board">
+  return (
+    <div className="board">
+      {props.boardTiles.map(tile => (
         <Tile
-          tile={this.state.selectedTile}
-          placeholder={this.state.isPlaceholder}
-          placed={this.state.isPlaced}
-          onTileClick={this.onTileClick.bind(this)}
-          rotated={false}
+          tile={tile.tile}
+          placeholder={tile.placeholder}
+          placed={tile.placed}
+          onTileClick={handleTilePlace}
+          rotated={tile.rotated}
+          key={tile.id}
+          id={tile.id}
         />
-      </div>
-    );
-  }
-}
+      ))}
+    </div>
+  );
+};
 
 export default Board;

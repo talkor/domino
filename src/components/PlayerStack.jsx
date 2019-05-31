@@ -2,40 +2,27 @@ import React from 'react';
 import Tile from './Tile.jsx';
 import './PlayerStack.css';
 
-class PlayerStack extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedTile: -1
-    };
-  }
-
-  onTileClick(event) {
+const PlayerStack = props => {
+  const handleTileClick = event => {
     event.preventDefault();
     const selectedTile = event.currentTarget.dataset.tile;
-    this.setState({
-      selectedTile
-    });
+    props.setSelectedTile(selectedTile);
+  };
 
-    this.props.setSelectedTile(selectedTile);
-  }
-
-  render() {
-    return (
-      <div className="player-stack">
-        {this.props.playerTiles.map((tile, key) => {
-          return (
-            <Tile
-              tile={tile}
-              key={key}
-              selected={this.state.selectedTile == tile}
-              onTileClick={this.onTileClick.bind(this)}
-            />
-          );
-        })}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="player-stack">
+      {props.playerTiles.map((tile, key) => {
+        return (
+          <Tile
+            tile={tile}
+            key={key}
+            selected={props.selectedTile == tile}
+            onTileClick={handleTileClick.bind(this)}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export default PlayerStack;

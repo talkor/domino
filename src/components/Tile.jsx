@@ -7,7 +7,7 @@ const Tile = props => {
     props.placed ? 'placed' : ''
   } ${props.selected ? 'selected' : ''} ${props.isStock ? 'stock' : ''} ${
     props.placeholder ? 'placeholder' : ''
-  }`;
+  } ${props.empty ? 'empty' : ''}`;
 
   if (props.rendered) {
     return (

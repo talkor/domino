@@ -91,7 +91,19 @@ class Game extends React.Component {
         gameTiles.splice(randomIndex, 1);
       });
 
-    this.setState({ playerTiles, gameTiles });
+    const score = playerTiles.reduce(
+      (sum, value) => sum + tilesMap[value].a + tilesMap[value].b,
+      0
+    );
+
+    this.setState({
+      playerTiles,
+      gameTiles,
+      stats: {
+        ...this.state.stats,
+        score
+      }
+    });
   }
 
   generateBoardTiles() {

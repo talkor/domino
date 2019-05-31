@@ -1,4 +1,4 @@
-export const tiles = {
+export const tilesMap = {
   0: [
     {
       a: 0,

@@ -12,11 +12,11 @@ class Toolbar extends React.Component {
     return (
       <React.Fragment>
         <div className="toolbar">
-          <Timer />
           <span>Turns: {this.props.stats.numTurns}</span>
           <span>Stock Withdrawals: {this.props.stats.stockWithdrawals}</span>
           <span>Avg. Turn Time: {this.props.stats.avgTurnTime}</span>
           <span>Score: {this.props.stats.score}</span>
+          <Timer elapsedSeconds={this.props.elapsedSeconds} />
           <button className="game-button new">New Game</button>
           <button className="game-button prev">Prev</button>
           <button className="game-button next">Next</button>

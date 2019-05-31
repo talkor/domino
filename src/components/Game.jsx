@@ -3,6 +3,7 @@ import PlayerStack from './PlayerStack.jsx';
 import Board from './Board.jsx';
 import Stock from './Stock.jsx';
 import Toolbar from './Toolbar.jsx';
+import { tilesMap } from '../TilesMap';
 import './Game.css';
 
 const NUM_STACK = 6;
@@ -19,7 +20,7 @@ class Game extends React.Component {
       boardTiles: [],
       selectedTile: -1,
       moves: [],
-      gameTime: 0,
+      elapsedSeconds: 0,
       uiMessage: {
         message: '',
         show: false
@@ -27,11 +28,52 @@ class Game extends React.Component {
       stats: {
         numTurns: 0,
         stockWithdrawals: 0,
-        turnTime: [],
+        turnTime: [0],
         avgTurnTime: 0,
         score: 0
       }
     };
+  }
+
+  render() {
+    return (
+      <div>
+        <Toolbar
+          stats={this.state.stats}
+          uiMessage={this.state.uiMessage}
+          elapsedSeconds={this.state.elapsedSeconds}
+        />
+        <Board
+          boardTiles={this.state.boardTiles}
+          selectedTile={this.state.selectedTile}
+          onTilePlaced={this.onTilePlaced.bind(this)}
+        />
+        <div className="player-section">
+          <Stock
+            gameTiles={this.state.gameTiles}
+            empty={this.state.gameTiles.length === 0}
+            onStockWithdrawal={this.onStockWithdrawal.bind(this)}
+          />
+          <PlayerStack
+            playerTiles={this.state.playerTiles}
+            selectedTile={this.state.selectedTile}
+            setSelectedTile={this.setSelectedTile.bind(this)}
+            onTilePlace={this.onTilePlaced.bind(this)}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    this.generatePlayerTiles();
+    this.generateBoardTiles();
+    this.showUiMessage('Game started');
+    this.initTimer();
+  }
+
+  componentWillUnmount() {
+    this.stopTimer();
   }
 
   generatePlayerTiles() {
@@ -88,6 +130,7 @@ class Game extends React.Component {
       playerTiles.splice(playerTiles.indexOf(parseInt(selectedTile, 10)), 1);
 
       this.setState({ boardTiles, playerTiles, selectedTile: -1 });
+      this.makeTurn({ method: 'place' });
     } else {
       this.showUiMessage('You must select a tile first');
     }
@@ -122,42 +165,49 @@ class Game extends React.Component {
     } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
       playerTiles.push(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
-
+      this.makeTurn({ method: 'stock' });
       this.setState({ playerTiles, gameTiles });
     } else {
       this.showUiMessage('You cannot hold more than 10 tiles at a time');
     }
   }
 
-  render() {
-    return (
-      <div>
-        <Toolbar stats={this.state.stats} uiMessage={this.state.uiMessage} />
-        <Board
-          boardTiles={this.state.boardTiles}
-          selectedTile={this.state.selectedTile}
-          onTilePlaced={this.onTilePlaced.bind(this)}
-        />
-        <div className="player-section">
-          <Stock
-            gameTiles={this.state.gameTiles}
-            empty={this.state.gameTiles.length === 0}
-            onStockWithdrawal={this.onStockWithdrawal.bind(this)}
-          />
-          <PlayerStack
-            playerTiles={this.state.playerTiles}
-            selectedTile={this.state.selectedTile}
-            setSelectedTile={this.setSelectedTile.bind(this)}
-            onTilePlace={this.onTilePlaced.bind(this)}
-          />
-        </div>
-      </div>
+  makeTurn({ method }) {
+    const { numTurns, stockWithdrawals, turnTime } = this.state.stats;
+
+    const timeDifference =
+      this.state.elapsedSeconds - turnTime[turnTime.length - 1];
+    turnTime.push(timeDifference);
+
+    const score = this.state.playerTiles.reduce(
+      (sum, value) => sum + tilesMap[value].a + tilesMap[value].b,
+      0
     );
+
+    const updatedAverageTurnTime =
+      turnTime.reduce((sum, value) => sum + value, 0) / turnTime.length;
+
+    this.setState({
+      stats: {
+        ...this.state.stats,
+        numTurns: numTurns + 1,
+        stockWithdrawals:
+          method === 'stock' ? stockWithdrawals + 1 : stockWithdrawals,
+        score,
+        turnTime,
+        avgTurnTime: updatedAverageTurnTime.toFixed(1)
+      }
+    });
   }
 
-  componentDidMount() {
-    this.generatePlayerTiles();
-    this.generateBoardTiles();
+  initTimer() {
+    this.interval = setInterval(() => {
+      this.setState({ elapsedSeconds: this.state.elapsedSeconds + 1 });
+    }, 1000);
+  }
+
+  stopTimer() {
+    clearInterval(this.interval);
   }
 }
 

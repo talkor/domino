@@ -1,11 +1,11 @@
 .tile {
   border-radius: 5px;
-  width: 50px;
+  width: 40px;
   margin: 5px;
   background-color: #000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: ease.2s;
-  height: 100px;
+  transition: ease 0.2s;
+  height: 80px;
 }
 
 .tile:hover {
@@ -46,7 +46,7 @@
 .side-a,
 .side-b {
   position: relative;
-  height: 50px;
+  height: 40px;
 }
 
 .divider {
@@ -57,8 +57,8 @@
 
 .dot {
   display: none;
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   position: absolute;
   border-radius: 50%;
   background-color: #fff;

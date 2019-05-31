@@ -7,6 +7,7 @@ import './Game.css';
 
 const NUM_STACK = 6;
 const NUM_TILES = 28;
+const BOARD_SIZE = 40;
 
 class Game extends React.Component {
   constructor(props) {
@@ -40,18 +41,46 @@ class Game extends React.Component {
     this.setState({ playerTiles: chosenTiles, gameTiles: tiles });
   }
 
+  generateBoardTiles() {
+    this.setState({
+      boardTiles: new Array(BOARD_SIZE).fill({}).map((item, index) => {
+        return {
+          id: index,
+          tile: 0,
+          placed: false,
+          placeholder: true,
+          rotated: false
+        };
+      })
+    });
+  }
+
   setSelectedTile(selectedTile) {
     this.setState({ selectedTile });
   }
 
-  onTilePlaced() {}
+  onTilePlaced(tileId) {
+    const boardTiles = this.state.boardTiles;
+    const selectedTile = this.state.selectedTile;
+    boardTiles[tileId] = {
+      ...boardTiles[tileId],
+      tile: selectedTile,
+      placed: true,
+      placeholder: false
+    };
+
+    // Remove from playerTiles
+    const playerTiles = this.state.playerTiles;
+    playerTiles.splice(playerTiles.indexOf(parseInt(selectedTile, 10)), 1);
+    this.setState({ boardTiles, playerTiles, selectedTile: -1 });
+  }
 
   render() {
     return (
       <div>
         <Toolbar numTurns={this.state.numTurns} />
         <Board
-          placedTiles={this.state.placedTiles}
+          boardTiles={this.state.boardTiles}
           selectedTile={this.state.selectedTile}
           onTilePlaced={this.onTilePlaced.bind(this)}
         />
@@ -59,7 +88,9 @@ class Game extends React.Component {
           <Stock />
           <PlayerStack
             playerTiles={this.state.playerTiles}
+            selectedTile={this.state.selectedTile}
             setSelectedTile={this.setSelectedTile.bind(this)}
+            onTilePlace={this.onTilePlaced.bind(this)}
           />
         </div>
       </div>
@@ -68,6 +99,7 @@ class Game extends React.Component {
 
   componentDidMount() {
     this.generatePlayerTiles();
+    this.generateBoardTiles();
   }
 }
 

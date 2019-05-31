@@ -1,3 +1,9 @@
 .board {
   height: 400px;
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  align-items: center;
 }

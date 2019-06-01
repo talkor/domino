@@ -44,8 +44,8 @@ class Game extends React.Component {
           stats={this.state.stats}
           uiMessage={this.state.uiMessage}
           elapsedSeconds={this.state.elapsedSeconds}
-          onPrevClick={this.onPrevClick.bind(this)}
-          onNextClick={this.onNextClick.bind(this)}
+          onPrevClick={() => this.onTurnHistoryClick({ direction: 'prev' })}
+          onNextClick={() => this.onTurnHistoryClick({ direction: 'next' })}
         />
         <Board
           boardTiles={this.state.boardTiles}
@@ -82,31 +82,21 @@ class Game extends React.Component {
     this.stopTimer();
   }
 
-  onNextClick() {
+  onTurnHistoryClick({ direction }) {
     let { currentTurn, turns, maxTurn } = this.state;
 
-    if (currentTurn < maxTurn) {
+    if (direction === 'next' && currentTurn < maxTurn) {
       currentTurn = currentTurn + 1;
-      this.setState({
-        currentTurn,
-        playerTiles: turns[currentTurn].playerTiles,
-        boardTiles: turns[currentTurn].boardTiles,
-        stats: turns[currentTurn].stats
-      });
-    }
-  }
-
-  onPrevClick() {
-    let { currentTurn, turns } = this.state;
-    if (currentTurn > 0) {
+    } else if (direction === 'prev' && currentTurn > 0) {
       currentTurn = currentTurn - 1;
-      this.setState({
-        currentTurn,
-        playerTiles: turns[currentTurn].playerTiles,
-        boardTiles: turns[currentTurn].boardTiles,
-        stats: turns[currentTurn].stats
-      });
     }
+
+    this.setState({
+      currentTurn,
+      playerTiles: turns[currentTurn].playerTiles,
+      boardTiles: turns[currentTurn].boardTiles,
+      stats: turns[currentTurn].stats
+    });
   }
 
   generatePlayerTiles() {

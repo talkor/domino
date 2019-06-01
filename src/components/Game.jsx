@@ -10,6 +10,7 @@ const NUM_STACK = 6;
 const NUM_TILES = 28;
 const BOARD_SIZE = 108;
 const MAX_TILES_FOR_PLAYER = 10;
+const MIDDLE_TILE = 53;
 
 class Game extends React.Component {
   constructor(props) {
@@ -150,28 +151,94 @@ class Game extends React.Component {
   }
 
   generateBoardTiles() {
+    const boardTiles = new Array(BOARD_SIZE).fill({}).map((_, index) => {
+      return {
+        id: index,
+        tile: 0,
+        placed: false,
+        placeholder: true,
+        rotated: true,
+        rendered: false
+      };
+    });
+
+    boardTiles[MIDDLE_TILE].rendered = true;
+    boardTiles[MIDDLE_TILE].isFirst = true;
+
     this.setState({
-      boardTiles: new Array(BOARD_SIZE).fill({}).map((_, index) => {
+      boardTiles
+    });
+  }
+
+  async setSelectedTile(selectedTile) {
+    await this.setState({ selectedTile });
+    this.findPlaceholders();
+  }
+
+  findPlaceholders() {
+    const { boardTiles, selectedTile } = this.state;
+    const avaiablePositions = [];
+
+    boardTiles.map((tile, index) => {
+      if (tile.placed === true) {
+        // TODO: Handle doubles
+
+        if (tilesMap[tile.tile].a === tilesMap[selectedTile].a) {
+          console.log('matched left, rotate clockwise');
+          avaiablePositions.push({ position: index - 1, rotate: 90 });
+        } else if (tilesMap[tile.tile].a === tilesMap[selectedTile].b) {
+          console.log('matched left, rotate unclockwise');
+          avaiablePositions.push({ position: index - 1, rotate: 90 });
+        } else if (tilesMap[tile.tile].b === tilesMap[selectedTile].a) {
+          console.log('matched right, rotate unclockwise');
+          avaiablePositions.push({ position: index + 1, rotate: 90 });
+        } else if (tilesMap[tile.tile].b === tilesMap[selectedTile].b) {
+          console.log('matched right, rotate clockwise');
+          avaiablePositions.push({ position: index + 1, rotate: 90 });
+        }
+      }
+    });
+
+    this.clearPlaceholders();
+    this.showPlaceholders(avaiablePositions);
+  }
+
+  clearPlaceholders() {
+    const { boardTiles } = this.state;
+
+    this.setState({
+      boardTiles: boardTiles.map(tile => {
         return {
-          id: index,
-          tile: 0,
-          placed: false,
-          placeholder: true,
-          rotated: true
+          ...tile,
+          rendered: tile.isFirst || tile.placed
         };
       })
     });
   }
 
-  setSelectedTile(selectedTile) {
-    this.setState({ selectedTile });
+  showPlaceholders(positions) {
+    const { boardTiles } = this.state;
+
+    positions.map(tile => {
+      if (!boardTiles[tile.position].placed) {
+        boardTiles[tile.position] = {
+          ...boardTiles[tile.position],
+          placeholder: true,
+          rendered: true
+        };
+      }
+    });
+
+    this.setState({ boardTiles });
   }
 
   async onTilePlaced(tileId) {
     const boardTiles = this.state.boardTiles;
     const selectedTile = this.state.selectedTile;
 
-    if (selectedTile != -1) {
+    if (boardTiles[tileId].placed === true) {
+      this.showUiMessage('This tile is already placed', { type: 'warning' });
+    } else if (selectedTile != -1) {
       boardTiles[tileId] = {
         ...boardTiles[tileId],
         tile: selectedTile,
@@ -219,7 +286,7 @@ class Game extends React.Component {
     if (randomIndex === -1) {
       this.showUiMessage('Stock is empty!', { type: 'warning' });
     } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
-      playerTiles.push(this.state.gameTiles[randomIndex]);
+      playerTiles.unshift(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
       this.makeTurn({ method: 'stock' });
       this.setState({ playerTiles, gameTiles });

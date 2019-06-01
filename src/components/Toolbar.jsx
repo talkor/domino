@@ -8,7 +8,7 @@ const Toolbar = props => {
       <div className="toolbar">
         <span>Turns: {props.stats.numTurns}</span>
         <span>Stock Withdrawals: {props.stats.stockWithdrawals}</span>
-        <span>Avg. Turn Time: {props.stats.avgTurnTime}</span>
+        <span>Avg. Turn Time: {props.stats.avgTurnTime}s</span>
         <span>Score: {props.stats.score}</span>
         <Timer elapsedSeconds={props.elapsedSeconds} />
         <button className="game-button new">New Game</button>

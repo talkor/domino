@@ -8,7 +8,7 @@ import './Game.css';
 
 const NUM_STACK = 6;
 const NUM_TILES = 28;
-const BOARD_SIZE = 106;
+const BOARD_SIZE = 108;
 const MAX_TILES_FOR_PLAYER = 10;
 
 class Game extends React.Component {

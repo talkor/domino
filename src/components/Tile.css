@@ -1,11 +1,12 @@
 .tile {
   border-radius: 5px;
   width: 40px;
+  height: 80px;
   margin: 5px;
   background-color: #000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: ease 0.2s;
-  height: 80px;
+  transition: ease 0.5s;
+  transform-origin: center;
 }
 
 .tile:hover {
@@ -18,9 +19,14 @@
 .selected,
 .selected:hover {
   transform: scale(1.05) translateY(-10%);
-  transition: ease 0.5s;
   opacity: 1 !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 10px 20px rgba(0, 0, 0, 0.24);
+}
+
+.tile.placeholder,
+.tile.placed {
+  width: 30px;
+  height: 60px;
 }
 
 .tile.placed {
@@ -30,6 +36,7 @@
 
 .tile.placed.rotated:hover {
   transform: rotate(-90deg);
+  transform-origin: center;
 }
 
 .tile.placed:hover {
@@ -49,6 +56,11 @@
   height: 40px;
 }
 
+.placed .side-a,
+.placed .side-b {
+  height: 30px;
+}
+
 .divider {
   height: 1px;
   margin: 0 2px;
@@ -60,8 +72,14 @@
   width: 8px;
   height: 8px;
   position: absolute;
+
   border-radius: 50%;
   background-color: #fff;
+}
+
+.placed .dot {
+  width: 6px;
+  height: 6px;
 }
 
 .tile-1 .dot-1,

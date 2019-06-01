@@ -19,7 +19,9 @@ class Game extends React.Component {
       playerTiles: [],
       boardTiles: [],
       selectedTile: -1,
-      moves: [],
+      turns: [],
+      currentTurn: 0,
+      maxTurn: 0,
       elapsedSeconds: 0,
       uiMessage: {
         message: '',
@@ -42,6 +44,8 @@ class Game extends React.Component {
           stats={this.state.stats}
           uiMessage={this.state.uiMessage}
           elapsedSeconds={this.state.elapsedSeconds}
+          onPrevClick={this.onPrevClick.bind(this)}
+          onNextClick={this.onNextClick.bind(this)}
         />
         <Board
           boardTiles={this.state.boardTiles}
@@ -65,15 +69,44 @@ class Game extends React.Component {
     );
   }
 
-  componentDidMount() {
-    this.generatePlayerTiles();
-    this.generateBoardTiles();
+  async componentDidMount() {
+    await this.generatePlayerTiles();
+    await this.generateBoardTiles();
+    await this.saveTurn();
+
     this.showUiMessage('Game started');
     this.initTimer();
   }
 
   componentWillUnmount() {
     this.stopTimer();
+  }
+
+  onNextClick() {
+    let { currentTurn, turns, maxTurn } = this.state;
+
+    if (currentTurn < maxTurn) {
+      currentTurn = currentTurn + 1;
+      this.setState({
+        currentTurn,
+        playerTiles: turns[currentTurn].playerTiles,
+        boardTiles: turns[currentTurn].boardTiles,
+        stats: turns[currentTurn].stats
+      });
+    }
+  }
+
+  onPrevClick() {
+    let { currentTurn, turns } = this.state;
+    if (currentTurn > 0) {
+      currentTurn = currentTurn - 1;
+      this.setState({
+        currentTurn,
+        playerTiles: turns[currentTurn].playerTiles,
+        boardTiles: turns[currentTurn].boardTiles,
+        stats: turns[currentTurn].stats
+      });
+    }
   }
 
   generatePlayerTiles() {
@@ -106,15 +139,34 @@ class Game extends React.Component {
     });
   }
 
+  saveTurn() {
+    const {
+      playerTiles,
+      boardTiles,
+      stats,
+      elapsedSeconds,
+      turns
+    } = this.state;
+
+    turns.push({
+      playerTiles: [...playerTiles],
+      boardTiles: [...boardTiles],
+      stats,
+      elapsedSeconds
+    });
+
+    this.setState({ turns });
+  }
+
   generateBoardTiles() {
     this.setState({
-      boardTiles: new Array(BOARD_SIZE).fill({}).map((item, index) => {
+      boardTiles: new Array(BOARD_SIZE).fill({}).map((_, index) => {
         return {
           id: index,
           tile: 0,
           placed: false,
           placeholder: true,
-          rotated: false
+          rotated: true
         };
       })
     });
@@ -124,7 +176,7 @@ class Game extends React.Component {
     this.setState({ selectedTile });
   }
 
-  onTilePlaced(tileId) {
+  async onTilePlaced(tileId) {
     const boardTiles = this.state.boardTiles;
     const selectedTile = this.state.selectedTile;
 
@@ -141,8 +193,8 @@ class Game extends React.Component {
       const playerTiles = this.state.playerTiles;
       playerTiles.splice(playerTiles.indexOf(parseInt(selectedTile, 10)), 1);
 
-      this.setState({ boardTiles, playerTiles, selectedTile: -1 });
-      this.makeTurn({ method: 'place' });
+      await this.setState({ boardTiles, playerTiles, selectedTile: -1 });
+      await this.makeTurn({ method: 'place' });
     } else {
       this.showUiMessage('You must select a tile first');
     }
@@ -184,8 +236,9 @@ class Game extends React.Component {
     }
   }
 
-  makeTurn({ method }) {
+  async makeTurn({ method }) {
     const { numTurns, stockWithdrawals, turnTime } = this.state.stats;
+    const { currentTurn } = this.state;
 
     const timeDifference =
       this.state.elapsedSeconds - turnTime[turnTime.length - 1];
@@ -199,17 +252,23 @@ class Game extends React.Component {
     const updatedAverageTurnTime =
       turnTime.reduce((sum, value) => sum + value, 0) / turnTime.length;
 
-    this.setState({
-      stats: {
-        ...this.state.stats,
-        numTurns: numTurns + 1,
-        stockWithdrawals:
-          method === 'stock' ? stockWithdrawals + 1 : stockWithdrawals,
-        score,
-        turnTime,
-        avgTurnTime: updatedAverageTurnTime.toFixed(1)
-      }
+    const stats = {
+      ...this.state.stats,
+      numTurns: numTurns + 1,
+      stockWithdrawals:
+        method === 'stock' ? stockWithdrawals + 1 : stockWithdrawals,
+      score,
+      turnTime,
+      avgTurnTime: updatedAverageTurnTime.toFixed(1)
+    };
+
+    await this.setState({
+      currentTurn: currentTurn + 1,
+      maxTurn: currentTurn + 1,
+      stats
     });
+
+    await this.saveTurn();
   }
 
   initTimer() {

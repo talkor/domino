@@ -24,19 +24,37 @@
 }
 
 .ui-message {
+  width: 100%;
+  margin: 0 auto;
   text-align: center;
-  height: 20px;
-  opacity: 0;
-  transition: ease 0.5s;
 }
 
-.ui-message.show {
+.ui-message span {
+  display: inline;
+  transition: ease 0.5s;
+  background-color: rgb(5, 117, 230, 0.3);
+  border-radius: 10px;
+  padding: 2px 10px;
+  opacity: 0;
+  color: #fff;
+}
+
+.ui-message.warning span {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.ui-message.info span {
+  background-color: rgb(5, 117, 230, 0.3);
+  color: #fff;
+}
+
+.ui-message.show span {
   transition: ease 0.5s;
   opacity: 1;
 }
 
-.ui-message.hide {
+.ui-message.hide span {
   transition: ease 0.5s;
-
   opacity: 0;
 }

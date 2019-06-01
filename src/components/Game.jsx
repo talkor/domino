@@ -25,7 +25,8 @@ class Game extends React.Component {
       elapsedSeconds: 0,
       uiMessage: {
         message: '',
-        show: false
+        show: false,
+        type: ''
       },
       stats: {
         numTurns: 0,
@@ -74,7 +75,7 @@ class Game extends React.Component {
     await this.generateBoardTiles();
     await this.saveTurn();
 
-    this.showUiMessage('Game started');
+    this.showUiMessage('Game started', { type: 'info' });
     this.initTimer();
   }
 
@@ -186,14 +187,15 @@ class Game extends React.Component {
       await this.setState({ boardTiles, playerTiles, selectedTile: -1 });
       await this.makeTurn({ method: 'place' });
     } else {
-      this.showUiMessage('You must select a tile first');
+      this.showUiMessage('You must select a tile first', { type: 'warning' });
     }
   }
 
-  showUiMessage(message) {
+  showUiMessage(message, { type }) {
     this.setState({
       uiMessage: {
         message,
+        type,
         show: true
       }
     });
@@ -215,14 +217,16 @@ class Game extends React.Component {
     );
 
     if (randomIndex === -1) {
-      this.showUiMessage('Stock is empty!');
+      this.showUiMessage('Stock is empty!', { type: 'warning' });
     } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
       playerTiles.push(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
       this.makeTurn({ method: 'stock' });
       this.setState({ playerTiles, gameTiles });
     } else {
-      this.showUiMessage('You cannot hold more than 10 tiles at a time');
+      this.showUiMessage('You cannot hold more than 10 tiles at a time', {
+        type: 'warning'
+      });
     }
   }
 

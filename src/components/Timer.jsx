@@ -9,7 +9,7 @@ const Timer = props => {
 
   return (
     <div className="timer">
-      <span className="timer-minutes">{minutes}</span>:
+      Time: <span className="timer-minutes">{minutes}</span>:
       <span className="timer-seconds">{seconds}</span>
     </div>
   );

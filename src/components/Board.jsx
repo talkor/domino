@@ -19,6 +19,7 @@ const Board = props => {
           rotated={tile.rotated}
           key={tile.id}
           id={tile.id}
+          rendered={tile.rendered}
         />
       ))}
     </div>

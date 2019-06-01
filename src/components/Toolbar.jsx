@@ -19,8 +19,12 @@ const Toolbar = props => {
           Next
         </button>
       </div>
-      <div className={`ui-message ${props.uiMessage.show ? 'show' : 'hide'}`}>
-        {props.uiMessage.message}
+      <div
+        className={`ui-message ${props.uiMessage.show ? 'show' : 'hide'} ${
+          props.uiMessage.type
+        }`}
+      >
+        <span>{props.uiMessage.message}</span>
       </div>
     </React.Fragment>
   );

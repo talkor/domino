@@ -58,3 +58,26 @@
   transition: ease 0.5s;
   opacity: 0;
 }
+
+@media(max-width: 805px){
+  .toolbar {
+    width: 75%;
+    font-size: 75%;
+  }
+  .game-button {
+    padding: 4px, 7.5px;
+    margin: 4px;
+    font-size: 75%;
+  }
+}
+@media(max-width: 602px){
+  .toolbar {
+    width: 50%;
+    font-size: 50%;
+  }
+  .game-button {
+    padding: 2.5px, 5px;
+    margin: 2.5px;
+    font-size: 50%;
+  }
+} 

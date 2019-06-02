@@ -24,6 +24,7 @@ class Game extends React.Component {
       currentTurn: 0,
       maxTurn: 0,
       elapsedSeconds: 0,
+      isGameOver: false,
       uiMessage: {
         message: '',
         show: false,
@@ -46,6 +47,7 @@ class Game extends React.Component {
           stats={this.state.stats}
           uiMessage={this.state.uiMessage}
           elapsedSeconds={this.state.elapsedSeconds}
+          isGameOver={this.state.isGameOver}
           onPrevClick={() => this.onTurnHistoryClick({ direction: 'prev' })}
           onNextClick={() => this.onTurnHistoryClick({ direction: 'next' })}
         />
@@ -330,6 +332,29 @@ class Game extends React.Component {
     });
 
     await this.saveTurn();
+
+
+
+    //const noPosibleMoves = false;
+// for(var t in this.state.boardTiles) {
+//   console.log(t.placeholder);
+//   // if(t.placeholder == false) {
+//   //   noPosibleMoves = true;
+//   // }
+// }
+
+/** check if player lost */
+/** if no more moves and stack is empty and player still has cards */
+if(this.state.gameTiles.length == 0 && this.state.playerTiles != 0 && noPosibleMoves==true) {
+  this.state.isGameOver = true;
+  this.gameOver('lose');
+}
+/** check if player won */
+/** if stack is empty and player hand is empty */
+if(this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
+  this.state.isGameOver = true;
+    this.gameOver('win');
+}
   }
 
   initTimer() {
@@ -341,6 +366,17 @@ class Game extends React.Component {
   stopTimer() {
     clearInterval(this.interval);
   }
+
+  gameOver(result) {
+   this.showUiMessage('Game Over');
+   if(result == 'win') {
+    this.showUiMessage('Congratulations, you WON!');
+   } else if(result == 'lose') {
+    this.showUiMessage('Too bad, you lost. Your score is: ' + this.state.stats.score);
+   }
+   this.stopTimer();
+  }
+
 }
 
 export default Game;

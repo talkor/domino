@@ -318,7 +318,7 @@ class Game extends React.Component {
       playerTiles.push(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
       this.makeTurn({ method: 'stock' });
-      this.setState({ playerTiles, gameTiles });
+      this.setState({ playerTiles, gameTiles, selectedTile: -1 });
     } else {
       this.showUiMessage('You cannot hold more than 10 tiles at a time', {
         type: 'warning'

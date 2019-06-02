@@ -48,8 +48,9 @@ class Game extends React.Component {
           uiMessage={this.state.uiMessage}
           elapsedSeconds={this.state.elapsedSeconds}
           isGameOver={this.state.isGameOver}
-          onPrevClick={() => this.onTurnHistoryClick({ direction: 'prev' })}
-          onNextClick={() => this.onTurnHistoryClick({ direction: 'next' })}
+          onPrevClick={() => this.onTurnHistoryClick('prev')}
+          onNextClick={() => this.onTurnHistoryClick('next')}
+          onUndoClick={() => this.onUndoClick()}
         />
         <Board
           boardTiles={this.state.boardTiles}
@@ -86,7 +87,7 @@ class Game extends React.Component {
     this.stopTimer();
   }
 
-  onTurnHistoryClick({ direction }) {
+  onTurnHistoryClick(direction) {
     let { currentTurn, turns, maxTurn } = this.state;
 
     if (direction === 'next' && currentTurn < maxTurn) {
@@ -99,8 +100,29 @@ class Game extends React.Component {
       currentTurn,
       playerTiles: turns[currentTurn].playerTiles,
       boardTiles: turns[currentTurn].boardTiles,
-      stats: turns[currentTurn].stats
+      stats: turns[currentTurn].stats,
+      gameTiles: turns[currentTurn].playerTiles
     });
+  }
+
+  onUndoClick() {
+    const { currentTurn, turns } = this.state;
+
+    if (currentTurn > 0) {
+      const newCurrentTurn = currentTurn - 1;
+      const newTurns = [...turns];
+      newTurns.pop();
+
+      this.setState({
+        currentTurn: newCurrentTurn,
+        turns: newTurns,
+        maxTurn: newCurrentTurn,
+        playerTiles: turns[newCurrentTurn].playerTiles,
+        boardTiles: turns[newCurrentTurn].boardTiles,
+        stats: turns[newCurrentTurn].stats,
+        gameTiles: turns[newCurrentTurn].gameTiles
+      });
+    }
   }
 
   generatePlayerTiles() {
@@ -139,12 +161,14 @@ class Game extends React.Component {
       boardTiles,
       stats,
       elapsedSeconds,
-      turns
+      turns,
+      gameTiles
     } = this.state;
 
     turns.push({
       playerTiles: [...playerTiles],
       boardTiles: [...boardTiles],
+      gameTiles: [...gameTiles],
       stats,
       elapsedSeconds
     });
@@ -188,13 +212,16 @@ class Game extends React.Component {
         if (tilesMap[tile.tile].a === tilesMap[selectedTile].a) {
           console.log('matched left, rotate clockwise');
           avaiablePositions.push({ position: index - 1, rotate: 90 });
-        } else if (tilesMap[tile.tile].a === tilesMap[selectedTile].b) {
+        }
+        if (tilesMap[tile.tile].a === tilesMap[selectedTile].b) {
           console.log('matched left, rotate unclockwise');
           avaiablePositions.push({ position: index - 1, rotate: 90 });
-        } else if (tilesMap[tile.tile].b === tilesMap[selectedTile].a) {
+        }
+        if (tilesMap[tile.tile].b === tilesMap[selectedTile].a) {
           console.log('matched right, rotate unclockwise');
           avaiablePositions.push({ position: index + 1, rotate: 90 });
-        } else if (tilesMap[tile.tile].b === tilesMap[selectedTile].b) {
+        }
+        if (tilesMap[tile.tile].b === tilesMap[selectedTile].b) {
           console.log('matched right, rotate clockwise');
           avaiablePositions.push({ position: index + 1, rotate: 90 });
         }
@@ -258,6 +285,8 @@ class Game extends React.Component {
     } else {
       this.showUiMessage('You must select a tile first', { type: 'warning' });
     }
+
+    this.clearPlaceholders();
   }
 
   showUiMessage(message, { type }) {
@@ -279,8 +308,8 @@ class Game extends React.Component {
   }
 
   onStockWithdrawal() {
-    const gameTiles = this.state.gameTiles;
-    const playerTiles = this.state.playerTiles;
+    const { playerTiles, gameTiles } = this.state;
+
     const randomIndex = Math.floor(
       Math.random() * Math.floor(this.state.gameTiles.length)
     );
@@ -288,10 +317,10 @@ class Game extends React.Component {
     if (randomIndex === -1) {
       this.showUiMessage('Stock is empty!', { type: 'warning' });
     } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
-      playerTiles.unshift(this.state.gameTiles[randomIndex]);
+      playerTiles.push(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
       this.makeTurn({ method: 'stock' });
-      this.setState({ playerTiles, gameTiles });
+      this.setState({ playerTiles, gameTiles, selectedTile: -1 });
     } else {
       this.showUiMessage('You cannot hold more than 10 tiles at a time', {
         type: 'warning'

@@ -1,0 +1,163 @@
+.tile {
+  border-radius: 5px;
+  width: 40px;
+  margin: 5px;
+  background-color: #000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: ease 0.2s;
+  height: 80px;
+}
+
+.tile:hover {
+  transform: scale(1.05);
+  transition: ease 0.5s;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.selected,
+.selected:hover {
+  transform: scale(1.05) translateY(-10%);
+  transition: ease 0.5s;
+  opacity: 1 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 10px 20px rgba(0, 0, 0, 0.24);
+}
+
+.tile.placed {
+  cursor: default;
+  opacity: 1;
+}
+
+.tile.placed.rotated:hover {
+  transform: rotate(-90deg);
+}
+
+.tile.placed:hover {
+  transform: none;
+}
+
+.rotated {
+  transform: rotate(-90deg);
+  transform-origin: center;
+  position: relative;
+  margin: 0 30px;
+}
+
+.side-a,
+.side-b {
+  position: relative;
+  height: 40px;
+}
+
+.divider {
+  height: 1px;
+  margin: 0 2px;
+  background-color: #fff;
+}
+
+.dot {
+  display: none;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.tile-1 .dot-1,
+.tile-3 .dot-3,
+.tile-5 .dot-5 {
+  display: block;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.tile-2 .dot-1,
+.tile-3 .dot-1,
+.tile-4 .dot-1,
+.tile-5 .dot-1,
+.tile-6 .dot-1 {
+  display: block;
+  top: 10%;
+  left: 10%;
+}
+
+.tile-2 .dot-2,
+.tile-3 .dot-2,
+.tile-4 .dot-2,
+.tile-5 .dot-2,
+.tile-6 .dot-2 {
+  display: block;
+  bottom: 10%;
+  right: 10%;
+}
+
+.tile-4 .dot-3,
+.tile-5 .dot-3,
+.tile-6 .dot-3 {
+  display: block;
+  top: 10%;
+  right: 10%;
+}
+
+.tile-4 .dot-4,
+.tile-5 .dot-4,
+.tile-6 .dot-4 {
+  display: block;
+  bottom: 10%;
+  left: 10%;
+}
+
+.tile-6 .dot-5,
+.tile-6 .dot-6 {
+  display: block;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.tile-6 .dot-5 {
+  left: 10%;
+}
+
+.tile-6 .dot-6 {
+  right: 10%;
+}
+
+.stock:hover {
+  transform: rotate3d(1, 1, 1, 15deg);
+  transform-style: preserve-3d;
+  background-image: linear-gradient(to bottom right, #000, #100);
+}
+
+.stock .divider {
+  display: none;
+}
+
+.stock.empty {
+  display: none;
+}
+
+.placeholder {
+  background-color: transparent;
+  border: 1px solid rgb(255, 0, 0);
+  box-shadow: none;
+}
+
+.placeholder:hover,
+.placeholder.rotated:hover {
+  cursor: pointer;
+  transition: ease 0.5s;
+}
+
+.placeholder:hover {
+  transform: scale(1.05) !important;
+}
+
+.placeholder.rotated:hover {
+  transform: scale(1.05) rotate(-90deg) !important;
+}
+
+.placeholder .divider {
+  display: none;
+}

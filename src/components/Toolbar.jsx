@@ -11,12 +11,30 @@ const Toolbar = props => {
         <span>Avg. Turn Time: {props.stats.avgTurnTime}s</span>
         <span>Score: {props.stats.score}</span>
         <Timer elapsedSeconds={props.elapsedSeconds} />
-        <button onClick={props.onUndoClick} className="game-button undo">
-          Undo
+        {props.isGameOver ? (
+          ''
+        ) : (
+          <button onClick={props.onUndoClick} className="game-button undo">
+            Undo
+          </button>
+        )}
+        <button onClick={props.onNewGameClick} className="game-button new">
+          New Game
         </button>
-        <button className="game-button new">New Game</button>
-        {props.isGameOver? <button onClick={props.onPrevClick} className="game-button prev">Prev</button>: '' }
-        {props.isGameOver? <button onClick={props.onNextClick} className="game-button next">Next</button>: '' }
+        {props.isGameOver ? (
+          <button onClick={props.onPrevClick} className="game-button prev">
+            Prev
+          </button>
+        ) : (
+          ''
+        )}
+        {props.isGameOver ? (
+          <button onClick={props.onNextClick} className="game-button next">
+            Next
+          </button>
+        ) : (
+          ''
+        )}
       </div>
       <div
         className={`ui-message ${props.uiMessage.show ? 'show' : 'hide'} ${

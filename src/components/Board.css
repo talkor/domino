@@ -3,9 +3,11 @@
   width: 100%;
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(12, 1fr);
+  grid-template-columns: repeat(28, 1fr);
+  grid-template-rows: repeat(28, 1fr);
   align-items: center;
+  overflow: scroll;
+  grid-gap: 22px;
 }
 
 @media (max-width: 805px) {

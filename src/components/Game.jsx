@@ -8,9 +8,8 @@ import './Game.css';
 
 const NUM_STACK = 6;
 const NUM_TILES = 28;
-const BOARD_SIZE = 108;
-const MAX_TILES_FOR_PLAYER = 10;
-const MIDDLE_TILE = 53;
+const BOARD_SIZE = 784;
+const MIDDLE_TILE = 406;
 
 class Game extends React.Component {
   constructor(props) {
@@ -25,7 +24,6 @@ class Game extends React.Component {
       maxTurn: 0,
       elapsedSeconds: 0,
       isGameOver: false,
-      lockAllControlls: false,
       uiMessage: {
         message: '',
         show: false,
@@ -58,22 +56,20 @@ class Game extends React.Component {
           boardTiles={this.state.boardTiles}
           selectedTile={this.state.selectedTile}
           onTilePlaced={this.onTilePlaced.bind(this)}
-          lockControls={this.state.lockAllControls}
         />
         <div className="player-section">
           <Stock
             gameTiles={this.state.gameTiles}
             empty={this.state.gameTiles.length === 0}
             onStockWithdrawal={this.onStockWithdrawal.bind(this)}
-            lockControls={this.state.lockAllControls}
-            />
+            isGameOver={this.state.isGameOver}
+          />
           <PlayerStack
             playerTiles={this.state.playerTiles}
             selectedTile={this.state.selectedTile}
             setSelectedTile={this.setSelectedTile.bind(this)}
             onTilePlace={this.onTilePlaced.bind(this)}
-            lockControls={this.state.lockAllControls}
-            />
+          />
         </div>
       </div>
     );
@@ -141,6 +137,7 @@ class Game extends React.Component {
       turns: [],
       maxTurn: 0,
       elapsedSeconds: 0,
+      isGameOver: false,
       stats: {
         ...this.state.stats,
         numTurns: 0,
@@ -149,6 +146,8 @@ class Game extends React.Component {
         avgTurnTime: 0
       }
     });
+    this.stopTimer();
+    this.initTimer();
   }
 
   generatePlayerTiles() {
@@ -235,21 +234,35 @@ class Game extends React.Component {
       if (tile.placed === true) {
         // TODO: Handle doubles
 
-        if (tilesMap[tile.tile].a === tilesMap[selectedTile].a) {
-          console.log('matched left, rotate clockwise');
-          avaiablePositions.push({ position: index - 1, rotate: 90 });
+        const sideA = tile.reversed ? 'b' : 'a';
+        const sideB = tile.reversed ? 'a' : 'b';
+        if (tilesMap[tile.tile][sideA] === tilesMap[selectedTile].a) {
+          avaiablePositions.push({
+            position: index - 1,
+            reversed: true,
+            double: tilesMap[selectedTile].double
+          });
         }
-        if (tilesMap[tile.tile].a === tilesMap[selectedTile].b) {
-          console.log('matched left, rotate unclockwise');
-          avaiablePositions.push({ position: index - 1, rotate: 90 });
+        if (tilesMap[tile.tile][sideA] === tilesMap[selectedTile].b) {
+          avaiablePositions.push({
+            position: index - 1,
+            reversed: false,
+            double: tilesMap[selectedTile].double
+          });
         }
-        if (tilesMap[tile.tile].b === tilesMap[selectedTile].a) {
-          console.log('matched right, rotate unclockwise');
-          avaiablePositions.push({ position: index + 1, rotate: 90 });
+        if (tilesMap[tile.tile][sideB] === tilesMap[selectedTile].a) {
+          avaiablePositions.push({
+            position: index + 1,
+            reversed: false,
+            double: tilesMap[selectedTile].double
+          });
         }
-        if (tilesMap[tile.tile].b === tilesMap[selectedTile].b) {
-          console.log('matched right, rotate clockwise');
-          avaiablePositions.push({ position: index + 1, rotate: 90 });
+        if (tilesMap[tile.tile][sideB] === tilesMap[selectedTile].b) {
+          avaiablePositions.push({
+            position: index + 1,
+            reversed: true,
+            double: tilesMap[selectedTile].double
+          });
         }
       }
     });
@@ -274,12 +287,15 @@ class Game extends React.Component {
   showPlaceholders(positions) {
     const { boardTiles } = this.state;
 
+    console.log(positions);
     positions.map(tile => {
       if (!boardTiles[tile.position].placed) {
         boardTiles[tile.position] = {
           ...boardTiles[tile.position],
+          reversed: tile.reversed,
           placeholder: true,
-          rendered: true
+          rendered: true,
+          rotated: !tile.double
         };
       }
     });
@@ -299,7 +315,7 @@ class Game extends React.Component {
         tile: selectedTile,
         placed: true,
         placeholder: false,
-        rotated: true
+        rotated: boardTiles[tileId].rotated
       };
 
       // Remove from playerTiles
@@ -342,15 +358,11 @@ class Game extends React.Component {
 
     if (randomIndex === -1) {
       this.showUiMessage('Stock is empty!', { type: 'warning' });
-    } else if (playerTiles.length <= MAX_TILES_FOR_PLAYER) {
+    } else {
       playerTiles.push(this.state.gameTiles[randomIndex]);
       gameTiles.splice(randomIndex, 1);
       this.makeTurn({ method: 'stock' });
       this.setState({ playerTiles, gameTiles, selectedTile: -1 });
-    } else {
-      this.showUiMessage('You cannot hold more than 10 tiles at a time', {
-        type: 'warning'
-      });
     }
   }
 
@@ -388,26 +400,38 @@ class Game extends React.Component {
 
     await this.saveTurn();
 
+    // Check game over
+    const isGameOver = this.isGameOver();
+    if (isGameOver.result) {
+      this.onGameOver(isGameOver.winner);
+    }
+  }
 
+  isGameOver() {
+    const { gameTiles, playerTiles } = this.state;
 
-const noPosibleMoves = true;
-for(var t in this.state.boardTiles) {
-  //if(t.rendered === true) {
-    console.log(t.rendered);
-    // noPosibleMoves = false;
-  // }
-}
+    if (gameTiles.length === 0) {
+      return { result: true, winner: 0 }; // 0 means no one won
+    } else if (playerTiles.length === 0) {
+      return { result: true, winner: 1 };
+    }
 
-/** check if player lost */
-/** if no more moves and stack is empty and player still has cards */
-if(this.state.gameTiles.length === 0 && this.state.playerTiles !== 0 && noPosibleMoves === true) {
-  this.gameOver('lose');
-}
-/** check if player won */
-/** if stack is empty and player hand is empty */
-if(this.state.gameTiles.length === 0 && this.state.playerTiles === 0) {
-    this.gameOver('win');
-}
+    return { result: false };
+  }
+
+  onGameOver(winner) {
+    this.setState({ isGameOver: true });
+
+    if (winner) {
+      this.showUiMessage('GAME OVER! Congratulations, you WON!', {
+        type: 'info'
+      });
+    } else {
+      this.showUiMessage('GAME OVER! Too bad, you lost.', {
+        type: 'info'
+      });
+    }
+    this.stopTimer();
   }
 
   initTimer() {
@@ -418,19 +442,6 @@ if(this.state.gameTiles.length === 0 && this.state.playerTiles === 0) {
 
   stopTimer() {
     clearInterval(this.interval);
-  }
-
-  gameOver(result) {
-   this.state.isGameOver = true;
-   this.showUiMessage('Game Over', { type: 'info' });
-   if(result === 'win') {
-    this.showUiMessage('Congratulations, you WON!', { type: 'info' });
-   } else if(result === 'lose') {
-    this.showUiMessage(`Too bad, you lost. Your score is: ${this.state.stats.score}`, { type: 'info' });
-   }
-   this.stopTimer();
-   //lock all controllers
-   this.state.lockAllControls = true;
   }
 }
 

@@ -3,4 +3,5 @@
   width: 100%;
   justify-content: center;
   transition: ease 0.5s all;
+  flex-wrap: wrap;
 }

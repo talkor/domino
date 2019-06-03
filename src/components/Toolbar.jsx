@@ -11,9 +11,13 @@ const Toolbar = props => {
         <span>Avg. Turn Time: {props.stats.avgTurnTime}s</span>
         <span>Score: {props.stats.score}</span>
         <Timer elapsedSeconds={props.elapsedSeconds} />
-        <button onClick={props.onUndoClick} className="game-button undo">
-          Undo
-        </button>
+        {props.isGameOver ? (
+          ''
+        ) : (
+          <button onClick={props.onUndoClick} className="game-button undo">
+            Undo
+          </button>
+        )}
         <button onClick={props.onNewGameClick} className="game-button new">
           New Game
         </button>

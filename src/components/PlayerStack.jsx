@@ -11,16 +11,22 @@ const PlayerStack = props => {
 
   return (
     <div className="player-stack">
-      {props.playerTiles.map((tile, key) => {
-        return (
-          <Tile
-            tile={tile}
-            key={key}
-            selected={props.selectedTile == tile}
-            onTileClick={handleTileClick.bind(this)}
-          />
-        );
-      })}
+      {props.isGameOver ? (
+        ''
+      ) : (
+        <React.Fragment>
+          {props.playerTiles.map((tile, key) => {
+            return (
+              <Tile
+                tile={tile}
+                key={key}
+                selected={props.selectedTile == tile}
+                onTileClick={handleTileClick.bind(this)}
+              />
+            );
+          })}
+        </React.Fragment>
+      )}
     </div>
   );
 };

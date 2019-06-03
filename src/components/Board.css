@@ -13,20 +13,16 @@
     max-width: 30px;
     max-height: 60px;
   }
-
   .side-a {
     height: 30px;
   }
-
   .side-b {
     height: 30px;
   }
-
   .board {
     max-height: 500px;
     max-width: 75%;
   }
-<<<<<<< HEAD
   .tile .placeholder {
     width: 20px;
     height: 40px;
@@ -35,14 +31,10 @@
     width: 20px;
     height: 40px;
   }
-=======
-
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
   .dot {
     width: 6px;
     height: 6px;
   }
-<<<<<<< HEAD
   .placed .dot {
     width: 4.5px;
     height: 4.5px;
@@ -56,12 +48,6 @@
   .placed .side-b {
     height: 20px;
   }
-=======
-
-  .player-stack {
-    width: 75%;
-  }
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
 }
 
 @media (max-width: 602px) {
@@ -69,7 +55,6 @@
     max-width: 20px;
     max-height: 40px;
   }
-<<<<<<< HEAD
   .tile .placeholder {
     width: 15px;
     height: 30px;
@@ -78,9 +63,6 @@
     width: 15px;
     height: 30px;
   }
-=======
-
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
   .side-a {
     height: 20px;
   }
@@ -88,33 +70,24 @@
   .side-b {
     height: 20px;
   }
-<<<<<<< HEAD
   .placed .side-a {
     height: 15px;
   }
   .placed .side-b {
     height: 15px;
   }
-=======
-
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
   .board {
     max-height: 400px;
     max-width: 50%;
   }
-
   .dot {
     width: 4px;
     height: 4px;
   }
-<<<<<<< HEAD
   .placed .dot {
     width: 3px;
     height: 3px;
   }
-=======
-
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
   .player-stack {
     width: 50%;
   }

@@ -388,7 +388,6 @@ class Game extends React.Component {
 
     await this.saveTurn();
 
-<<<<<<< HEAD
 
 
 const noPosibleMoves = true;
@@ -409,32 +408,6 @@ if(this.state.gameTiles.length === 0 && this.state.playerTiles !== 0 && noPosibl
 if(this.state.gameTiles.length === 0 && this.state.playerTiles === 0) {
     this.gameOver('win');
 }
-=======
-    //const noPosibleMoves = false;
-    // for(var t in this.state.boardTiles) {
-    //   console.log(t.placeholder);
-    //   // if(t.placeholder == false) {
-    //   //   noPosibleMoves = true;
-    //   // }
-    // }
-
-    /** check if player lost */
-    /** if no more moves and stack is empty and player still has cards */
-    if (
-      this.state.gameTiles.length == 0 &&
-      this.state.playerTiles != 0 &&
-      noPosibleMoves == true
-    ) {
-      this.state.isGameOver = true;
-      this.gameOver('lose');
-    }
-    /** check if player won */
-    /** if stack is empty and player hand is empty */
-    if (this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
-      this.state.isGameOver = true;
-      this.gameOver('win');
-    }
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
   }
 
   initTimer() {
@@ -448,7 +421,6 @@ if(this.state.gameTiles.length === 0 && this.state.playerTiles === 0) {
   }
 
   gameOver(result) {
-<<<<<<< HEAD
    this.state.isGameOver = true;
    this.showUiMessage('Game Over', { type: 'info' });
    if(result === 'win') {
@@ -459,17 +431,6 @@ if(this.state.gameTiles.length === 0 && this.state.playerTiles === 0) {
    this.stopTimer();
    //lock all controllers
    this.state.lockAllControls = true;
-=======
-    this.showUiMessage('Game Over');
-    if (result == 'win') {
-      this.showUiMessage('Congratulations, you WON!');
-    } else if (result == 'lose') {
-      this.showUiMessage(
-        'Too bad, you lost. Your score is: ' + this.state.stats.score
-      );
-    }
-    this.stopTimer();
->>>>>>> 7a4c39ad200742db201cfa1880b3516211ca29c1
   }
 }
 

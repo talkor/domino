@@ -384,28 +384,30 @@ class Game extends React.Component {
 
     await this.saveTurn();
 
-
-
     //const noPosibleMoves = false;
-// for(var t in this.state.boardTiles) {
-//   console.log(t.placeholder);
-//   // if(t.placeholder == false) {
-//   //   noPosibleMoves = true;
-//   // }
-// }
+    // for(var t in this.state.boardTiles) {
+    //   console.log(t.placeholder);
+    //   // if(t.placeholder == false) {
+    //   //   noPosibleMoves = true;
+    //   // }
+    // }
 
-/** check if player lost */
-/** if no more moves and stack is empty and player still has cards */
-if(this.state.gameTiles.length == 0 && this.state.playerTiles != 0 && noPosibleMoves==true) {
-  this.state.isGameOver = true;
-  this.gameOver('lose');
-}
-/** check if player won */
-/** if stack is empty and player hand is empty */
-if(this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
-  this.state.isGameOver = true;
-    this.gameOver('win');
-}
+    /** check if player lost */
+    /** if no more moves and stack is empty and player still has cards */
+    if (
+      this.state.gameTiles.length == 0 &&
+      this.state.playerTiles != 0 &&
+      noPosibleMoves == true
+    ) {
+      this.state.isGameOver = true;
+      this.gameOver('lose');
+    }
+    /** check if player won */
+    /** if stack is empty and player hand is empty */
+    if (this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
+      this.state.isGameOver = true;
+      this.gameOver('win');
+    }
   }
 
   initTimer() {
@@ -419,15 +421,16 @@ if(this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
   }
 
   gameOver(result) {
-   this.showUiMessage('Game Over');
-   if(result == 'win') {
-    this.showUiMessage('Congratulations, you WON!');
-   } else if(result == 'lose') {
-    this.showUiMessage('Too bad, you lost. Your score is: ' + this.state.stats.score);
-   }
-   this.stopTimer();
+    this.showUiMessage('Game Over');
+    if (result == 'win') {
+      this.showUiMessage('Congratulations, you WON!');
+    } else if (result == 'lose') {
+      this.showUiMessage(
+        'Too bad, you lost. Your score is: ' + this.state.stats.score
+      );
+    }
+    this.stopTimer();
   }
-
 }
 
 export default Game;

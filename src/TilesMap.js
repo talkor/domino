@@ -1,7 +1,8 @@
 export const tilesMap = {
   0: {
     a: 0,
-    b: 0
+    b: 0,
+    double: true
   },
   1: {
     a: 0,
@@ -9,7 +10,8 @@ export const tilesMap = {
   },
   2: {
     a: 1,
-    b: 1
+    b: 1,
+    double: true
   },
   3: {
     a: 0,
@@ -21,7 +23,8 @@ export const tilesMap = {
   },
   5: {
     a: 2,
-    b: 2
+    b: 2,
+    double: true
   },
   6: {
     a: 0,
@@ -37,7 +40,8 @@ export const tilesMap = {
   },
   9: {
     a: 3,
-    b: 3
+    b: 3,
+    double: true
   },
   10: {
     a: 0,
@@ -57,7 +61,8 @@ export const tilesMap = {
   },
   14: {
     a: 4,
-    b: 4
+    b: 4,
+    double: true
   },
   15: {
     a: 0,
@@ -81,7 +86,8 @@ export const tilesMap = {
   },
   20: {
     a: 5,
-    b: 5
+    b: 5,
+    double: true
   },
   21: {
     a: 0,
@@ -109,6 +115,7 @@ export const tilesMap = {
   },
   27: {
     a: 6,
-    b: 6
+    b: 6,
+    double: true
   }
 };

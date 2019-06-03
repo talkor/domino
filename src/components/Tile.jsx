@@ -9,15 +9,18 @@ const Tile = props => {
     props.placeholder ? 'placeholder' : ''
   } ${props.empty ? 'empty' : ''} ${props.rendered ? '' : 'hide'}`;
 
-
   return (
     <div
-      className={`tile ${renderedClasses}`}
+      className={renderedClasses}
       onClick={e => props.onTileClick(e, props.placed)}
       data-tile={props.tile}
       id={props.id}
     >
-      <div className={`side-a tile-${tilesMap[props.tile].a}`}>
+      <div
+        className={`side-a tile-${
+          props.reversed ? tilesMap[props.tile].b : tilesMap[props.tile].a
+        }`}
+      >
         <span className="dot dot-1" />
         <span className="dot dot-2" />
         <span className="dot dot-3" />
@@ -26,7 +29,11 @@ const Tile = props => {
         <span className="dot dot-6" />
       </div>
       <div className="divider" />
-      <div className={`side-b tile-${tilesMap[props.tile].b}`}>
+      <div
+        className={`side-b tile-${
+          props.reversed ? tilesMap[props.tile].a : tilesMap[props.tile].b
+        }`}
+      >
         <span className="dot dot-1" />
         <span className="dot dot-2" />
         <span className="dot dot-3" />
@@ -36,8 +43,6 @@ const Tile = props => {
       </div>
     </div>
   );
-
-  return '';
 };
 
 Tile.defaultProps = {

@@ -4,12 +4,18 @@ import './Stock.css';
 
 const Stock = props => {
   return (
-    <Tile
-      empty={props.empty}
-      tile="0"
-      isStock
-      onTileClick={props.onStockWithdrawal}
-    />
+    <React.Fragment>
+      {props.isGameOver ? (
+        ''
+      ) : (
+        <Tile
+          empty={props.empty}
+          tile="0"
+          isStock
+          onTileClick={props.onStockWithdrawal}
+        />
+      )}
+    </React.Fragment>
   );
 };
 

@@ -69,6 +69,7 @@ class Game extends React.Component {
             selectedTile={this.state.selectedTile}
             setSelectedTile={this.setSelectedTile.bind(this)}
             onTilePlace={this.onTilePlaced.bind(this)}
+            isGameOver={this.state.isGameOver}
           />
         </div>
       </div>
@@ -264,6 +265,37 @@ class Game extends React.Component {
             double: tilesMap[selectedTile].double
           });
         }
+
+        if (tilesMap[tile.tile].double) {
+          if (tilesMap[tile.tile].a === tilesMap[selectedTile].a) {
+            avaiablePositions.push({
+              position: index - NUM_TILES,
+              reversed: true,
+              double: !tilesMap[selectedTile].double
+            });
+          }
+          if (tilesMap[tile.tile].a === tilesMap[selectedTile].b) {
+            avaiablePositions.push({
+              position: index - NUM_TILES,
+              reversed: false,
+              double: !tilesMap[selectedTile].double
+            });
+          }
+          if (tilesMap[tile.tile].b === tilesMap[selectedTile].a) {
+            avaiablePositions.push({
+              position: index + NUM_TILES,
+              reversed: false,
+              double: !tilesMap[selectedTile].double
+            });
+          }
+          if (tilesMap[tile.tile].b === tilesMap[selectedTile].b) {
+            avaiablePositions.push({
+              position: index + NUM_TILES,
+              reversed: true,
+              double: !tilesMap[selectedTile].double
+            });
+          }
+        }
       }
     });
 
@@ -287,7 +319,6 @@ class Game extends React.Component {
   showPlaceholders(positions) {
     const { boardTiles } = this.state;
 
-    console.log(positions);
     positions.map(tile => {
       if (!boardTiles[tile.position].placed) {
         boardTiles[tile.position] = {

@@ -7,7 +7,7 @@
   grid-template-rows: repeat(28, 1fr);
   align-items: center;
   overflow: scroll;
-  grid-gap: 22px;
+  grid-column-gap: 3%;
 }
 
 @media (max-width: 805px) {

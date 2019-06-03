@@ -23,15 +23,31 @@
     max-height: 300px;
     max-width: 75%;
   }
+  .tile .placeholder {
+    width: 20px;
+    height: 40px;
+  }
+  .tile .placed {
+    width: 20px;
+    height: 40px;
+  }
   .dot {
     width: 6px;
     height: 6px;
   }
+  .placed .dot {
+    width: 4.5px;
+    height: 4.5px;
+  }
   .player-stack {
     width: 75%;
   }
-
-
+  .placed .side-a {
+    height: 20px;
+  }
+  .placed .side-b {
+    height: 20px;
+  }
 }
 
 @media(max-width: 602px) {
@@ -39,11 +55,25 @@
     max-width: 20px;
     max-height: 40px;
   }
+  .tile .placeholder {
+    width: 15px;
+    height: 30px;
+  }
+  .tile .placed {
+    width: 15px;
+    height: 30px;
+  }
   .side-a {
     height: 20px;
   }
   .side-b {
     height: 20px;
+  }
+  .placed .side-a {
+    height: 15px;
+  }
+  .placed .side-b {
+    height: 15px;
   }
   .board {
     max-height: 200px;
@@ -52,6 +82,10 @@
   .dot {
     width: 4px;
     height: 4px;
+  }
+  .placed .dot {
+    width: 3px;
+    height: 3px;
   }
   .player-stack {
     width: 50%;

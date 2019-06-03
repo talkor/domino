@@ -25,6 +25,7 @@ class Game extends React.Component {
       maxTurn: 0,
       elapsedSeconds: 0,
       isGameOver: false,
+      lockAllControlls: false,
       uiMessage: {
         message: '',
         show: false,
@@ -56,19 +57,22 @@ class Game extends React.Component {
           boardTiles={this.state.boardTiles}
           selectedTile={this.state.selectedTile}
           onTilePlaced={this.onTilePlaced.bind(this)}
+          lockControls={this.state.lockAllControls}
         />
         <div className="player-section">
           <Stock
             gameTiles={this.state.gameTiles}
             empty={this.state.gameTiles.length === 0}
             onStockWithdrawal={this.onStockWithdrawal.bind(this)}
-          />
+            lockControls={this.state.lockAllControls}
+            />
           <PlayerStack
             playerTiles={this.state.playerTiles}
             selectedTile={this.state.selectedTile}
             setSelectedTile={this.setSelectedTile.bind(this)}
             onTilePlace={this.onTilePlaced.bind(this)}
-          />
+            lockControls={this.state.lockAllControls}
+            />
         </div>
       </div>
     );
@@ -364,24 +368,22 @@ class Game extends React.Component {
 
 
 
-    //const noPosibleMoves = false;
-// for(var t in this.state.boardTiles) {
-//   console.log(t.placeholder);
-//   // if(t.placeholder == false) {
-//   //   noPosibleMoves = true;
-//   // }
-// }
+const noPosibleMoves = true;
+for(var t in this.state.boardTiles) {
+  //if(t.rendered === true) {
+    console.log(t.rendered);
+    // noPosibleMoves = false;
+  // }
+}
 
 /** check if player lost */
 /** if no more moves and stack is empty and player still has cards */
-if(this.state.gameTiles.length == 0 && this.state.playerTiles != 0 && noPosibleMoves==true) {
-  this.state.isGameOver = true;
+if(this.state.gameTiles.length === 0 && this.state.playerTiles !== 0 && noPosibleMoves === true) {
   this.gameOver('lose');
 }
 /** check if player won */
 /** if stack is empty and player hand is empty */
-if(this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
-  this.state.isGameOver = true;
+if(this.state.gameTiles.length === 0 && this.state.playerTiles === 0) {
     this.gameOver('win');
 }
   }
@@ -397,13 +399,16 @@ if(this.state.gameTiles.length == 0 && this.state.playerTiles == 0) {
   }
 
   gameOver(result) {
-   this.showUiMessage('Game Over');
-   if(result == 'win') {
-    this.showUiMessage('Congratulations, you WON!');
-   } else if(result == 'lose') {
-    this.showUiMessage('Too bad, you lost. Your score is: ' + this.state.stats.score);
+   this.state.isGameOver = true;
+   this.showUiMessage('Game Over', { type: 'info' });
+   if(result === 'win') {
+    this.showUiMessage('Congratulations, you WON!', { type: 'info' });
+   } else if(result === 'lose') {
+    this.showUiMessage(`Too bad, you lost. Your score is: ${this.state.stats.score}`, { type: 'info' });
    }
    this.stopTimer();
+   //lock all controllers
+   this.state.lockAllControls = true;
   }
 
 }

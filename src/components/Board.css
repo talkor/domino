@@ -13,23 +13,18 @@
     max-width: 30px;
     max-height: 60px;
   }
-  .side-a {
-    height: 30px;
-  }
+  .side-a,
   .side-b {
     height: 30px;
   }
   .board {
     max-height: 500px;
-    max-width: 75%;
+    max-width: 100%;
   }
-  .tile .placeholder {
-    width: 20px;
-    height: 40px;
-  }
-  .tile .placed {
-    width: 20px;
-    height: 40px;
+  .tile.placeholder,
+  .tile.placed {
+    max-width: 20px;
+    max-height: 40px;
   }
   .dot {
     width: 6px;
@@ -42,9 +37,7 @@
   .player-stack {
     width: 75%;
   }
-  .placed .side-a {
-    height: 20px;
-  }
+  .placed .side-a,
   .placed .side-b {
     height: 20px;
   }
@@ -55,30 +48,22 @@
     max-width: 20px;
     max-height: 40px;
   }
-  .tile .placeholder {
-    width: 15px;
-    height: 30px;
+  .tile.placeholder,
+  .tile.placed {
+    max-width: 15px;
+    max-height: 30px;
   }
-  .tile .placed {
-    width: 15px;
-    height: 30px;
-  }
-  .side-a {
-    height: 20px;
-  }
-
+  .side-a,
   .side-b {
     height: 20px;
   }
-  .placed .side-a {
-    height: 15px;
-  }
+  .placed .side-a,
   .placed .side-b {
     height: 15px;
   }
   .board {
     max-height: 400px;
-    max-width: 50%;
+    max-width: 75%;
   }
   .dot {
     width: 4px;

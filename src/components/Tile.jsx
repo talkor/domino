@@ -9,6 +9,7 @@ const Tile = props => {
     props.placeholder ? 'placeholder' : ''
   } ${props.empty ? 'empty' : ''} ${props.rendered ? '' : 'hide'}`;
 
+
   return (
     <div
       className={`tile ${renderedClasses}`}

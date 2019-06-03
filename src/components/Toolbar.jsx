@@ -14,7 +14,9 @@ const Toolbar = props => {
         <button onClick={props.onUndoClick} className="game-button undo">
           Undo
         </button>
-        <button className="game-button new">New Game</button>
+        <button onClick={props.onNewGameClick} className="game-button new">
+          New Game
+        </button>
         <button onClick={props.onPrevClick} className="game-button prev">
           Prev
         </button>

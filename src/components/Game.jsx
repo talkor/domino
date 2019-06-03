@@ -49,6 +49,7 @@ class Game extends React.Component {
           onPrevClick={() => this.onTurnHistoryClick('prev')}
           onNextClick={() => this.onTurnHistoryClick('next')}
           onUndoClick={() => this.onUndoClick()}
+          onNewGameClick={() => this.onNewGameClick()}
         />
         <Board
           boardTiles={this.state.boardTiles}
@@ -121,6 +122,27 @@ class Game extends React.Component {
         gameTiles: turns[newCurrentTurn].gameTiles
       });
     }
+  }
+
+  async onNewGameClick() {
+    await this.generatePlayerTiles();
+    await this.generateBoardTiles();
+    await this.saveTurn();
+
+    this.showUiMessage('New game started', { type: 'info' });
+    this.setState({
+      currentTurn: 0,
+      turns: [],
+      maxTurn: 0,
+      elapsedSeconds: 0,
+      stats: {
+        ...this.state.stats,
+        numTurns: 0,
+        stockWithdrawals: 0,
+        turnTime: [0],
+        avgTurnTime: 0
+      }
+    });
   }
 
   generatePlayerTiles() {
